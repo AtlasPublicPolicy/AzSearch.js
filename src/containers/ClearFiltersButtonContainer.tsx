@@ -15,6 +15,17 @@ export interface OwnProps {
 const mapDispatchToProps = (dispatch: redux.Dispatch<any>, ownProps: OwnProps) => {
   return {
     onClear: () => {
+      // Clear URL Params, except search term
+      const queryString = window.location.search;
+      let currUrlParams = new URLSearchParams(queryString);
+      let newUrlParams = new URLSearchParams();
+
+      if ( currUrlParams.has( "q" )) {
+        newUrlParams.append( "q", currUrlParams.get( "q" ));
+      }
+
+      window.history.replaceState({}, "", `${location.pathname}?${newUrlParams.toString()}`);
+
       dispatch(facetsActions.clearFacetsSelections());
       dispatch(searchParameterActions.setPage(1));
       dispatch(asyncActions.fetchSearchResults);

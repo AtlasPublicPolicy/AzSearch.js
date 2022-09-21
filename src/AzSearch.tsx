@@ -39,6 +39,10 @@ class Automagic {
         this.store.setConfig(config);
     }
 
+    public setSearchParameters(parameters: Store.SearchParametersUpdate) {
+        this.store.updateSearchParameters(parameters);
+    }
+
     public addSearchBox(htmlId: string, parameters?: Store.SuggestionsParametersUpdate, suggestionValueKey?: string, mustacheTemplate?: string, cssClasses?: { [key: string]: string; }) {
         this.store.updateSuggestionsParameters(parameters);
         let template = mustacheTemplate ? compile(mustacheTemplate) : null;
@@ -50,8 +54,8 @@ class Automagic {
         );
     }
 
-    public addCheckboxFacet(htmlId: string, fieldName: string, dataType: Store.CheckboxDataType, cssClasses?: { [key: string]: string; }) {
-        this.store.addCheckboxFacet(fieldName, dataType);
+    public addCheckboxFacet(htmlId: string, fieldName: string, dataType: Store.CheckboxDataType,  count: number, cssClasses?: { [key: string]: string; }) {
+        this.store.addCheckboxFacet(fieldName, dataType, count);
         render(
             <Provider store={this.store.store}>
                 <CheckboxFacetContainer facet={fieldName} css={cssClasses} />
@@ -60,8 +64,8 @@ class Automagic {
         );
     }
 
-    public addRangeFacet(htmlId: string, fieldName: string, dataType: Store.RangeDataType, min: number | Date, max: number | Date, cssClasses?: { [key: string]: string; }) {
-        this.store.addRangeFacet(fieldName, dataType, min, max);
+    public addRangeFacet(htmlId: string, fieldName: string, dataType: Store.RangeDataType, min: number | Date, max: number | Date, lower: number | Date, upper: number | Date, cssClasses?: { [key: string]: string; }) {
+        this.store.addRangeFacet(fieldName, dataType, min, max, lower, upper);
         render(
             <Provider store={this.store.store}>
                 <RangeFacetContainer facet={fieldName} css={cssClasses} />
@@ -99,11 +103,11 @@ class Automagic {
         );
     }
 
-    public addSortBy(htmlId: string, fields: { fieldName: string, displayName?: string, latitude?: number, longitude?: number }[], defaultSortFieldName?: string, cssClasses?: { [key: string]: string; }) {
+    // todo add asc sort
+    public addSortBy(htmlId: string, fields: { fieldName: string, displayName?: string, order?: string, latitude?: number, longitude?: number }[], defaultSortFieldName?: string, cssClasses?: { [key: string]: string; }) {
         let updatedSortClause = "";
-        const order = "desc";
         let formattedFields = fields.map((field) => {
-            let orderbyClause = createOrderByClause(field, order);
+            let orderbyClause = createOrderByClause(field, field.order ? field.order : "desc");
             updatedSortClause = field.fieldName === defaultSortFieldName ? orderbyClause : updatedSortClause;
             return {
                 displayName: field.displayName ? field.displayName : field.fieldName,

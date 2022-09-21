@@ -1,7 +1,8 @@
 import { Template } from "hogan.js";
 import { connect } from "react-redux";
 import * as React from "react";
-import { Store, inputActions, suggestionsActions, asyncActions, facetsActions, searchParameterActions } from "azsearchstore";
+import { Store, inputActions, suggestionsActions, asyncActions, facetsActions, searchParameterActions} from "azsearchstore";
+import  RangeFacet from "../components/RangeFacet";
 import * as redux from "redux";
 import SearchBox from "../components/SearchBox";
 
@@ -15,6 +16,8 @@ export interface OwnProps {
     css: { [key: string]: string; };
 }
 
+let savedRange = null;
+
 const mapDispatchToProps = (dispatch: redux.Dispatch<any>) => {
     return {
         onInputChange: (input: string) => {
@@ -27,14 +30,17 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<any>) => {
             dispatch(suggestionsActions.clearSuggestions());
         },
         clearFacetsAndSearch: () => {
+            // dispatch(facetsActions.setFacetRange("tweetDate", savedRange.facets["tweetDate" ].filterLowerBound, savedRange.facets["tweetDate" ].filterUpperBound;));
             dispatch(searchParameterActions.setPage(1));
-            dispatch(facetsActions.clearFacetsSelections());
-            dispatch(asyncActions.fetchSearchResults);
+            dispatch(asyncActions.fetchSearchResultsFromFacet);
         }
     };
 };
 
 function mapStateToProps(state: Store.SearchState, ownProps: OwnProps) {
+
+    savedRange = state.facets || null;
+
     return {
         input: state.parameters.input,
         preTag: state.parameters.suggestionsParameters.highlightPreTag,
@@ -46,6 +52,7 @@ function mapStateToProps(state: Store.SearchState, ownProps: OwnProps) {
         suggesterName: state.parameters.suggestionsParameters.suggesterName
     };
 }
+
 
 export const stateProps = getReturnType(mapStateToProps);
 export const dispatchProps = getReturnType(mapDispatchToProps);

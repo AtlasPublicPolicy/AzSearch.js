@@ -16,9 +16,7 @@ export interface OwnProps {
 const mapDispatchToProps = (dispatch: redux.Dispatch<any>, ownProps: OwnProps) => {
     return {
         toggleFacet: (value: string) => {
-            dispatch(searchParameterActions.setPage(1));
             dispatch(facetsActions.toggleCheckboxFacetSelection(ownProps.facet, value));
-            dispatch(asyncActions.fetchSearchResultsFromFacet);
         },
     };
 };

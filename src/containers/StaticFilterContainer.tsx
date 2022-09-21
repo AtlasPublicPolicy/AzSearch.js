@@ -19,8 +19,6 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<any>, ownProps: OwnProps) =
   return {
     onFilterChange: (filter: string) => {
       dispatch(facetsActions.setGlobalFilter(ownProps.filterKey, filter));
-      dispatch(searchParameterActions.setPage(1));
-      dispatch(asyncActions.fetchSearchResultsFromFacet);
     }
   };
 };

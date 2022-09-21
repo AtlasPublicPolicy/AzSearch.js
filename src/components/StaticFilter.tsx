@@ -14,7 +14,7 @@ class StaticFilter extends React.PureComponent<PropsType, State> {
     if (beforeFirstRequest) return <div></div>;
 
     let options = filters.map((filter, index) => {
-      return <option key={index} selected={filter.filter === activeFilter} value={filter.filter}>{filter.displayName ? filter.displayName : filter.filter}</option>;
+      return <option  id={filterKey + "-" + filter.displayName} key={index} selected={filter.filter === activeFilter} value={filter.filter}>{filter.displayName ? filter.displayName : filter.filter}</option>;
     });
 
     let onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,7 +31,7 @@ class StaticFilter extends React.PureComponent<PropsType, State> {
       </div>
       <div className={css.searchFacets__facetControlContainer}>
         <div className={css.searchFacets__facetControlList}>
-          <select className={css.sorting__sortByControl} onChange={onChange}>
+          <select className={css.sorting__sortByControl} onChange={onChange} id={filterKey}>
             {options}
           </select>
         </div>

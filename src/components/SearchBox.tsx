@@ -11,12 +11,21 @@ class SearchBox extends React.PureComponent<PropsType, State> {
         if (newValue.method === "up" || newValue.method === "down") {
             return;
         }
-        const input = newValue.newValue;
+
+        const input = this.sanitizeInput(newValue.newValue)
         // remove highlight tags for the stored input
         this.props.onInputChange(input);
         if (newValue.method === "click" || newValue.method === "enter") {
             this.props.clearFacetsAndSearch();
         }
+    }
+    sanitizeInput(input) {
+        let sanitized = "";
+        sanitized = input.replace( "^", "" ).replace( "!", "-" );
+        if(sanitized.charAt(0) == "*"){
+            sanitized = sanitized.substr(1); // removes * if first char
+        }
+        return sanitized;
     }
     handleKeyDown(evt: any) {
         if (evt.key === "Enter") {
@@ -85,7 +94,7 @@ class SearchBox extends React.PureComponent<PropsType, State> {
 
         // input props
         const inputProps = {
-            placeholder: "Search...",
+            placeholder: "Search Tweets",
             value: input,
             onChange: this.onInputChange.bind(this),
             type: "search",
