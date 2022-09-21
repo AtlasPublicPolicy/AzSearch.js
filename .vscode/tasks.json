@@ -1,10 +1,24 @@
 {
   // See https://go.microsoft.com/fwlink/?LinkId=733558
   // for the documentation about the tasks.json format
-  "version": "0.1.0",
+  "version": "2.0.0",
   "command": "npm",
-  "isShellCommand": true,
-  "args": ["run", "devbuild"],
-  "showOutput": "always",
-  "problemMatcher": "$tsc"
+  "args": [
+    "run",
+    "devbuild"
+  ],
+  "problemMatcher": "$tsc",
+  "tasks": [
+    {
+      "label": "npm",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "devbuild"
+      ],
+      "problemMatcher": "$tsc",
+      "group": "build"
+    }
+  ]
 }
