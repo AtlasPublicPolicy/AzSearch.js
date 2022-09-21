@@ -31,7 +31,7 @@ node_modules
 jspm_packages
 
 # Webpack
-dist
+#dist
 
 # Optional npm cache directory
 .npm
